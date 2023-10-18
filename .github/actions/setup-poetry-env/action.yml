@@ -2,10 +2,15 @@ name: "setup-poetry-env"
 description: "Composite action to setup the Python and poetry environment."
 
 inputs:
-   python-version:
-     required: false
-     description: "The python version to use"
-     default: "3.11"
+  python-version:
+    required: false
+    description: "The python version to use"
+    default: "3.11"
+  with-docs:
+    required: false
+    description: "Install the docs dependency group"
+    default: 'false'
+  
 
 runs:
   using: "composite"
@@ -24,12 +29,6 @@ runs:
 
     - name: Add Poetry to Path
       run: echo "$HOME/.local/bin" >> $GITHUB_PATH
-      if: ${{ matrix.os != 'Windows' }}
-      shell: bash
-
-    - name: Add Poetry to Path
-      run: echo "$APPDATA\Python\Scripts" >> $GITHUB_PATH
-      if: ${{ matrix.os == 'Windows' }}
       shell: bash
 
     - name: Configure Poetry virtual environment in project
@@ -41,9 +40,15 @@ runs:
       uses: actions/cache@v3
       with:
         path: .venv
-        key: venv-${{ runner.os }}-${{ inputs.python-version }}-${{ hashFiles('poetry.lock') }}
+        key: venv-${{ runner.os }}-${{ inputs.python-version }}-${{ inputs.with-docs }}-${{ hashFiles('poetry.lock') }}
 
     - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      run: poetry install --no-interaction
+      run: |
+        if [[ "${{ inputs.with-docs }}" == "true" ]]; then
+          poetry install --no-interaction --with mkdocs
+        else
+          poetry install --no-interaction
+        fi
       shell: bash
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+

@@ -36,6 +36,8 @@ jobs:
 
       - name: Set up the environment
         uses: ./.github/actions/setup-poetry-env
+        with:
+          with-docs: true
 
       - name: Check if documentation can be built
         run: poetry run mkdocs build -s
