@@ -18,8 +18,8 @@ spark = (SparkSession.builder
   .getOrCreate())
 
 
-class DescribeColumnEquality:
-    def test_it_removes_non_word_characters_short(self):
+def describe_column_equality():
+    def it_removes_non_word_characters_short():
         data = [
             ("jo&&se", "jose"),
             ("**li**", "li"),
@@ -31,7 +31,7 @@ class DescribeColumnEquality:
         assert_column_equality(df, "clean_name", "expected_name")
 
 
-    def test_it_removes_non_word_characters_nice_error(self):
+    def it_removes_non_word_characters_nice_error():
         data = [
             ("matt7", "matt"),
             ("bill&", "bill"),
@@ -45,8 +45,8 @@ class DescribeColumnEquality:
 
 
 
-class TestDescribeDataframeEquality:
-    def test_remove_non_word_characters_long(self):
+def describe_dataframe_equality():
+    def test_remove_non_word_characters_long():
         source_data = [
             ("jo&&se",),
             ("**li**",),
@@ -68,7 +68,7 @@ class TestDescribeDataframeEquality:
         assert_df_equality(actual_df, expected_df)
 
 
-    def test_remove_non_word_characters_long_error(self):
+    def test_remove_non_word_characters_long_error():
         source_data = [
             ("matt7",),
             ("bill&",),
@@ -91,19 +91,19 @@ class TestDescribeDataframeEquality:
             assert_df_equality(actual_df, expected_df)
 
 
-    def test_ignore_row_order(self):
+    def ignore_row_order():
         df1 = spark.createDataFrame([(1,), (2,), (3,)], ["some_num"])
         df2 = spark.createDataFrame([(2,), (1,), (3,)], ["some_num"])
         assert_df_equality(df1, df2, ignore_row_order=True)
 
 
-    def test_ignore_column_order(self):
+    def ignore_column_order():
         df1 = spark.createDataFrame([(1, 7), (2, 8), (3, 9)], ["num1", "num2"])
         df2 = spark.createDataFrame([(7, 1), (8, 2), (9, 3)], ["num2", "num1"])
         assert_df_equality(df1, df2, ignore_column_order=True)
 
 
-    def test_ignore_nullable_property(self):
+    def ignore_nullable_property():
         s1 = StructType([
            StructField("name", StringType(), True),
            StructField("age", IntegerType(), True)])
@@ -115,7 +115,7 @@ class TestDescribeDataframeEquality:
         assert_df_equality(df1, df2, ignore_nullable=True)
 
 
-    def test_ignore_nullable_property_array(self):
+    def ignore_nullable_property_array():
         s1 = StructType([
            StructField("name", StringType(), True),
            StructField("coords", ArrayType(DoubleType(), True), True),])
@@ -127,14 +127,14 @@ class TestDescribeDataframeEquality:
         assert_df_equality(df1, df2, ignore_nullable=True)
 
 
-    def consider_nan_values_equal(self):
+    def consider_nan_values_equal():
         data1 = [(float('nan'), "jose"), (2.0, "li")]
         df1 = spark.createDataFrame(data1, ["num", "name"])
         data2 = [(float('nan'), "jose"), (2.0, "li")]
         df2 = spark.createDataFrame(data2, ["num", "name"])
         assert_df_equality(df1, df2, allow_nan_equality=True)
 
-    # defprints_underline_message(self):
+    # def it_prints_underline_message():
     #     data = [
     #         ("jose", 42),
     #         ("li", 99),
@@ -152,8 +152,8 @@ class TestDescribeDataframeEquality:
     #     assert_df_equality(df1, df2, underline_cells=True)
 
 
-class TestDescribeAssertApproxColumnEquality:
-    def test_approx_col_equality_same(self):
+def describe_assert_approx_column_equality():
+    def test_approx_col_equality_same():
         data = [
             (1.1, 1.1),
             (2.2, 2.15),
@@ -164,7 +164,7 @@ class TestDescribeAssertApproxColumnEquality:
         assert_approx_column_equality(df, "num1", "num2", 0.1)
 
 
-    def test_approx_col_equality_different(self):
+    def test_approx_col_equality_different():
         data = [
             (1.1, 1.1),
             (2.2, 2.15),
@@ -176,7 +176,7 @@ class TestDescribeAssertApproxColumnEquality:
             assert_approx_column_equality(df, "num1", "num2", 0.1)
 
 
-    def test_approx_df_equality_same(self):
+    def test_approx_df_equality_same():
         data1 = [
             (1.1, "a"),
             (2.2, "b"),
@@ -194,7 +194,7 @@ class TestDescribeAssertApproxColumnEquality:
         assert_approx_df_equality(df1, df2, 0.1)
 
 
-    def test_approx_df_equality_different(self):
+    def test_approx_df_equality_different():
         data1 = [
             (1.1, "a"),
             (2.2, "b"),
@@ -213,8 +213,8 @@ class TestDescribeAssertApproxColumnEquality:
             assert_approx_df_equality(df1, df2, 0.1)
 
 
-class TestDescribeSchemaMismatchMessages:
-    def test_schema_mismatch_message(self):
+def describe_schema_mismatch_messages():
+    def test_schema_mismatch_message():
         data1 = [
             (1, "a"),
             (2, "b"),
