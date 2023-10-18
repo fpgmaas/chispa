@@ -7,8 +7,8 @@ from chispa import DataFramesNotEqualError
 import math
 
 
-def describe_assert_basic_rows_equality():
-    def it_throws_with_row_mismatches():
+class TestDescribeAssertBasicRowsEquality:
+    def test_it_throws_with_row_mismatches(self):
         data1 = [(1, "jose"), (2, "li"), (3, "laura")]
         df1 = spark.createDataFrame(data1, ["num", "expected_name"])
         data2 = [("bob", "jose"), ("li", "li"), ("luisa", "laura")]
@@ -16,7 +16,7 @@ def describe_assert_basic_rows_equality():
         with pytest.raises(DataFramesNotEqualError) as e_info:
             assert_basic_rows_equality(df1.collect(), df2.collect())
 
-    def it_works_when_rows_are_the_same():
+    def test_it_works_when_rows_are_the_same(self):
         data1 = [(1, "jose"), (2, "li"), (3, "laura")]
         df1 = spark.createDataFrame(data1, ["num", "expected_name"])
         data2 = [(1, "jose"), (2, "li"), (3, "laura")]
