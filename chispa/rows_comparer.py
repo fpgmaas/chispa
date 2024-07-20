@@ -77,7 +77,7 @@ def assert_generic_rows_equality(
                 format_string(str(r2), formats.mismatched_rows),
             ])
         # rows are equal
-        elif row_equality_fun(r1, r2, *row_equality_fun_args):
+        elif row_equality_fun(r1, r2, **row_equality_fun_args):
             r1_string = ", ".join(map(lambda f: f"{f}={r1[f]}", r1.__fields__))
             r2_string = ", ".join(map(lambda f: f"{f}={r2[f]}", r2.__fields__))
             t.add_row([
